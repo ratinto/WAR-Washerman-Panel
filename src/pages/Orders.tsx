@@ -253,17 +253,41 @@ export default function Orders() {
           </Card>
         </div>
 
-        {/* Search Bar - Mobile Friendly */}
-        <div className="mb-6 md:mb-8">
-          <div className="relative max-w-lg mx-auto">
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-            <Input
-              type="text"
-              placeholder="Search bag number or student name..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 md:py-4 text-sm md:text-base rounded-xl border-2 border-gray-200 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 bg-white shadow-sm transition-all duration-200"
-            />
+        {/* Enhanced Search Bar - Accessible & Mobile Optimized */}
+        <div className="mb-6">
+          <div className="relative">
+            <label htmlFor="order-search" className="sr-only">
+              Search orders by bag number or student name
+            </label>
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500 pointer-events-none" />
+              <Input
+                id="order-search"
+                type="search"
+                placeholder="Search bags or students..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-10 py-3 text-sm rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 bg-white shadow-sm transition-all duration-200 placeholder:text-gray-400"
+                aria-describedby="search-help"
+                autoComplete="off"
+                spellCheck="false"
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 hover:text-gray-600 transition-colors"
+                  aria-label="Clear search"
+                >
+                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              )}
+            </div>
+            <div id="search-help" className="mt-1 text-xs text-gray-500 text-center">
+              Search by bag number (B-001) or student name
+            </div>
           </div>
         </div>        {/* Loading State */}
         {loading && (
