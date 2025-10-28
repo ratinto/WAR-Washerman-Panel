@@ -174,67 +174,83 @@ export default function Orders() {
           </Button>
         </div>
 
-        {/* Filter Buttons - Fixed Layout with Better Spacing */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-          <Button
-            onClick={() => handleFilterChange('all')}
-            variant={activeFilter === 'all' ? 'default' : 'outline'}
-            style={{ minHeight: '100px', padding: '20px' }}
-            className={`flex flex-col items-center justify-center text-sm md:text-base font-medium transition-all duration-200 hover:scale-105 shadow-sm ${
+        {/* Filter Cards - Properly Aligned Layout */}
+        <div className="grid grid-cols-4 gap-2 mb-4">
+          <Card 
+            className={`cursor-pointer transition-all duration-200 active:scale-95 ${
               activeFilter === 'all' 
-                ? 'bg-primary text-primary-foreground shadow-lg border-primary' 
-                : 'border-2 hover:bg-accent hover:shadow-md'
+                ? 'ring-2 ring-blue-500 shadow-lg border-blue-200 bg-blue-50' 
+                : 'hover:shadow-md border hover:bg-gray-50'
             }`}
+            onClick={() => handleFilterChange('all')}
           >
-            <Package2 className="h-6 w-6 mb-4" />
-            <span className="font-semibold leading-relaxed">All Work</span>
-            <span className="text-xs font-normal opacity-90 mt-3">({getFilterCount('all')})</span>
-          </Button>
-
-          <Button
-            onClick={() => handleFilterChange('pending')}
-            variant={activeFilter === 'pending' ? 'default' : 'outline'}
-            style={{ minHeight: '100px', padding: '20px' }}
-            className={`flex flex-col items-center justify-center text-sm md:text-base font-medium transition-all duration-200 hover:scale-105 shadow-sm ${
+            <CardContent className="px-2 py-3 flex flex-col items-center justify-center gap-1.5">
+              <div className="flex items-center justify-center w-7 h-7 rounded-full bg-blue-100">
+                <Package2 className="h-3.5 w-3.5 text-blue-600" />
+              </div>
+              <div className="text-center">
+                <div className="text-base font-bold text-blue-900 leading-none">{getFilterCount('all')}</div>
+                <div className="text-xs font-medium text-blue-800 mt-0.5">All</div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card 
+            className={`cursor-pointer transition-all duration-200 active:scale-95 ${
               activeFilter === 'pending' 
-                ? 'bg-primary text-primary-foreground shadow-lg border-primary' 
-                : 'border-2 hover:bg-accent hover:shadow-md'
+                ? 'ring-2 ring-amber-500 shadow-lg border-amber-200 bg-amber-50' 
+                : 'hover:shadow-md border hover:bg-gray-50'
             }`}
+            onClick={() => handleFilterChange('pending')}
           >
-            <Clock className="h-6 w-6 mb-4" />
-            <span className="font-semibold leading-relaxed">Pending</span>
-            <span className="text-xs font-normal opacity-90 mt-3">({getFilterCount('pending')})</span>
-          </Button>
-
-          <Button
-            onClick={() => handleFilterChange('inprogress')}
-            variant={activeFilter === 'inprogress' ? 'default' : 'outline'}
-            style={{ minHeight: '100px', padding: '20px' }}
-            className={`flex flex-col items-center justify-center text-sm md:text-base font-medium transition-all duration-200 hover:scale-105 shadow-sm ${
+            <CardContent className="px-2 py-3 flex flex-col items-center justify-center gap-1.5">
+              <div className="flex items-center justify-center w-7 h-7 rounded-full bg-amber-100">
+                <Clock className="h-3.5 w-3.5 text-amber-600" />
+              </div>
+              <div className="text-center">
+                <div className="text-base font-bold text-amber-900 leading-none">{getFilterCount('pending')}</div>
+                <div className="text-xs font-medium text-amber-800 mt-0.5">Start</div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card 
+            className={`cursor-pointer transition-all duration-200 active:scale-95 ${
               activeFilter === 'inprogress' 
-                ? 'bg-primary text-primary-foreground shadow-lg border-primary' 
-                : 'border-2 hover:bg-accent hover:shadow-md'
+                ? 'ring-2 ring-blue-500 shadow-lg border-blue-200 bg-blue-50' 
+                : 'hover:shadow-md border hover:bg-gray-50'
             }`}
+            onClick={() => handleFilterChange('inprogress')}
           >
-            <Truck className="h-6 w-6 mb-4" />
-            <span className="font-semibold leading-relaxed">In Progress</span>
-            <span className="text-xs font-normal opacity-90 mt-3">({getFilterCount('inprogress')})</span>
-          </Button>
-
-          <Button
-            onClick={() => handleFilterChange('complete')}
-            variant={activeFilter === 'complete' ? 'default' : 'outline'}
-            style={{ minHeight: '100px', padding: '20px' }}
-            className={`flex flex-col items-center justify-center text-sm md:text-base font-medium transition-all duration-200 hover:scale-105 shadow-sm ${
+            <CardContent className="px-2 py-3 flex flex-col items-center justify-center gap-1.5">
+              <div className="flex items-center justify-center w-7 h-7 rounded-full bg-blue-100">
+                <Truck className="h-3.5 w-3.5 text-blue-600" />
+              </div>
+              <div className="text-center">
+                <div className="text-base font-bold text-blue-900 leading-none">{getFilterCount('inprogress')}</div>
+                <div className="text-xs font-medium text-blue-800 mt-0.5">Wash</div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card 
+            className={`cursor-pointer transition-all duration-200 active:scale-95 ${
               activeFilter === 'complete' 
-                ? 'bg-primary text-primary-foreground shadow-lg border-primary' 
-                : 'border-2 hover:bg-accent hover:shadow-md'
+                ? 'ring-2 ring-green-500 shadow-lg border-green-200 bg-green-50' 
+                : 'hover:shadow-md border hover:bg-gray-50'
             }`}
+            onClick={() => handleFilterChange('complete')}
           >
-            <CheckCircle className="h-6 w-6 mb-4" />
-            <span className="font-semibold leading-relaxed">Completed</span>
-            <span className="text-xs font-normal opacity-90 mt-3">({getFilterCount('complete')})</span>
-          </Button>
+            <CardContent className="px-2 py-3 flex flex-col items-center justify-center gap-1.5">
+              <div className="flex items-center justify-center w-7 h-7 rounded-full bg-green-100">
+                <CheckCircle className="h-3.5 w-3.5 text-green-600" />
+              </div>
+              <div className="text-center">
+                <div className="text-base font-bold text-green-900 leading-none">{getFilterCount('complete')}</div>
+                <div className="text-xs font-medium text-green-800 mt-0.5">Done</div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Search Bar - Mobile Friendly */}
