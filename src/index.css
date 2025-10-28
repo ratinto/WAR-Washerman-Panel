@@ -21,6 +21,15 @@
   --input: 0 0% 89.8%;
   --ring: 348 85% 26%;
   --radius: 0.5rem;
+  
+  /* Centralized Font System */
+  --font-family-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-family-heading: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-family-brand: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  
+  /* Brand Colors */
+  --color-brand-primary: #a30c34;
+  --color-brand-secondary: #8b0a2b;
 }
 
 * {
@@ -29,9 +38,77 @@
 
 body {
   margin: 0;
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-family-primary);
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Centralized Typography Classes */
+.font-heading {
+  font-family: var(--font-family-heading);
+}
+
+.font-brand {
+  font-family: var(--font-family-brand);
+}
+
+.text-brand-primary {
+  color: var(--color-brand-primary);
+}
+
+.text-brand-secondary {
+  color: var(--color-brand-secondary);
+}
+
+.bg-brand-primary {
+  background-color: var(--color-brand-primary);
+}
+
+.bg-brand-secondary {
+  background-color: var(--color-brand-secondary);
+}
+
+/* Page Titles */
+.page-title {
+  font-family: var(--font-family-heading);
+  color: var(--color-brand-primary);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+/* Card Titles */
+.card-title {
+  font-family: var(--font-family-heading);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+/* Modal Titles */
+.modal-title {
+  font-family: var(--font-family-heading);
+  color: var(--color-brand-primary);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+/* Brand Logo */
+.brand-logo {
+  font-family: var(--font-family-brand);
+  color: var(--color-brand-primary);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+/* Mobile Safe Area Support */
+.safe-area-padding-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Touch improvements for mobile */
+@media (hover: none) and (pointer: coarse) {
+  button, .cursor-pointer {
+    -webkit-tap-highlight-color: transparent;
+  }
 }
