@@ -27,11 +27,11 @@ const navItems: NavItem[] = [
     icon: <Search className="w-6 h-6" />,
     href: '/students',
   },
-  {
-    title: 'My Stats',
-    icon: <BarChart3 className="w-6 h-6" />,
-    href: '/statistics',
-  },
+  // {
+  //   title: 'My Stats',
+  //   icon: <BarChart3 className="w-6 h-6" />,
+  //   href: '/statistics',
+  // },
   {
     title: 'Settings',
     icon: <Settings className="w-6 h-6" />,

@@ -28,12 +28,12 @@ const navItems: NavItem[] = [
     href: '/students',
     label: 'Search',
   },
-  {
-    title: 'Stats',
-    icon: <BarChart3 className="h-6 w-6" />,
-    href: '/statistics',
-    label: 'Stats',
-  },
+  // {
+  //   title: 'Stats',
+  //   icon: <BarChart3 className="h-6 w-6" />,
+  //   href: '/statistics',
+  //   label: 'Stats',
+  // },
   {
     title: 'Settings',
     icon: <Settings className="h-6 w-6" />,

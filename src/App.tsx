@@ -41,14 +41,14 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
+          {/* <Route
             path="/statistics"
             element={
               <ProtectedRoute>
                 <Statistics />
               </ProtectedRoute>
             }
-          />
+          /> */}
           <Route
             path="/settings"
             element={
