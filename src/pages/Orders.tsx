@@ -54,6 +54,10 @@ export default function Orders() {
       filtered = filtered.filter(order => 
         order.status.toLowerCase() === activeFilter.toLowerCase()
       );
+      // FIFO: For pending and inprogress, sort by createdAt ascending (oldest first)
+      if (activeFilter === 'pending' || activeFilter === 'inprogress') {
+        filtered.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+      }
     }
 
     // Apply search query - Washerman friendly

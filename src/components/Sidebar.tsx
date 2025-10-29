@@ -1,9 +1,12 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Package2, Search, BarChart3, Settings, LogOut, Shirt } from 'lucide-react';
+import { Home, Package2, Search, BarChart3, Shirt } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useAuth } from '@/contexts/AuthContext';
+import { User, Settings, LogOut } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { useState, useRef, useEffect } from 'react';
 
 interface NavItem {
   title: string;
@@ -32,16 +35,26 @@ const navItems: NavItem[] = [
   //   icon: <BarChart3 className="w-6 h-6" />,
   //   href: '/statistics',
   // },
-  {
-    title: 'Settings',
-    icon: <Settings className="w-6 h-6" />,
-    href: '/settings',
-  },
+  // Settings moved to profile dropdown
 ];
 
 export function Sidebar() {
   const location = useLocation();
-  const { logout, user } = useAuth();
+  const { user, logout } = useAuth();
+  const [open, setOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    if (open) document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [open]);
 
   return (
     <div 
@@ -62,21 +75,6 @@ export function Sidebar() {
           </div>
         </div>
       </div>
-
-      {/* User Info */}
-      {user && (
-        <div className="shrink-0 border-b px-6 py-4">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full text-white font-semibold bg-brand-primary">
-              {user.username.charAt(0).toUpperCase()}
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium truncate">{user.username}</p>
-              <p className="text-xs text-muted-foreground">Washerman</p>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Navigation */}
       <nav className="flex-1 space-y-3 overflow-y-auto p-4">
@@ -105,19 +103,40 @@ export function Sidebar() {
 
       <Separator />
 
-      {/* Logout */}
-      <div className="shrink-0 p-4">
-        <Button
-          variant="ghost"
-          className="w-full justify-start h-16 text-lg font-semibold rounded-xl text-red-600 hover:bg-red-50 hover:text-red-700 hover:scale-105 transition-all"
-          onClick={logout}
-        >
-          <div className="flex items-center gap-4">
-            <LogOut className="w-6 h-6" />
-            <span>Log Out</span>
+      {/* Profile Section (bottom left) */}
+      {user && (
+        <div className="px-4 py-4 mt-auto mb-2">
+          <div className="relative" ref={dropdownRef}>
+            <Button
+              variant="ghost"
+              className="flex items-center gap-2 px-3 py-2 rounded-full border border-gray-200 shadow-sm hover:bg-gray-100 w-full justify-start"
+              onClick={() => setOpen((v) => !v)}
+              aria-label="Open profile menu"
+            >
+              <User className="w-5 h-5 text-brand-primary" />
+              <span className="font-medium text-gray-900 text-base">{user?.username}</span>
+            </Button>
+            {open && (
+              <div className="absolute left-0 bottom-12 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                <button
+                  className="flex w-full items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 text-base"
+                  onClick={() => { setOpen(false); navigate('/settings'); }}
+                >
+                  <Settings className="w-5 h-5 text-gray-500" />
+                  Settings
+                </button>
+                <button
+                  className="flex w-full items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 text-base border-t border-gray-100"
+                  onClick={() => { setOpen(false); logout(); }}
+                >
+                  <LogOut className="w-5 h-5" />
+                  Log Out
+                </button>
+              </div>
+            )}
           </div>
-        </Button>
-      </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { Home, Package2, Search, BarChart3, Settings, LogOut } from 'lucide-react';
+import { Home, Package2, Search, BarChart3 } from 'lucide-react';
 
 interface NavItem {
   title: string;
@@ -34,17 +34,12 @@ const navItems: NavItem[] = [
   //   href: '/statistics',
   //   label: 'Stats',
   // },
-  {
-    title: 'Settings',
-    icon: <Settings className="h-6 w-6" />,
-    href: '/settings',
-    label: 'Settings',
-  },
+  // Settings moved to profile dropdown
 ];
 
 export function MobileNavigation() {
   const location = useLocation();
-  const { logout } = useAuth();
+  useAuth(); // Only for auth context if needed
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 safe-area-padding-bottom md:hidden">
@@ -72,18 +67,7 @@ export function MobileNavigation() {
           );
         })}
         
-        {/* Logout Button */}
-        <button
-          onClick={logout}
-          className="flex flex-col items-center justify-center min-w-0 flex-1 px-1 py-2 rounded-lg text-red-600 hover:text-red-700 active:scale-95 transition-all duration-200"
-        >
-          <div className="mb-1">
-            <LogOut className="h-6 w-6" />
-          </div>
-          <span className="text-xs font-medium">
-            Logout
-          </span>
-        </button>
+  {/* Logout moved to profile dropdown */}
       </div>
     </div>
   );
