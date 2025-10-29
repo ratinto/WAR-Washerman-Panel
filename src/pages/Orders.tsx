@@ -11,8 +11,6 @@ import { api } from '@/services/api';
 import type { Order } from '@/types';
 import { Search, Loader2, RefreshCw, Package2, Clock, Truck, CheckCircle, ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 
-type FilterStatus = 'all' | 'pending' | 'inprogress' | 'complete';
-
 export default function Orders() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [orders, setOrders] = useState<Order[]>([]);
@@ -21,7 +19,9 @@ export default function Orders() {
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('');
-  const [activeFilter, setActiveFilter] = useState<FilterStatus>('all');
+  // const [activeFilter, setActiveFilter] = useState<FilterStatus>('all');
+  type FilterStatus = 'pending' | 'inprogress' | 'complete';
+  const [activeFilter, setActiveFilter] = useState<FilterStatus>('pending');
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -31,8 +31,9 @@ export default function Orders() {
     // Check for filter parameter in URL
     const filterParam = searchParams.get('filter');
     if (filterParam === 'pending' || filterParam === 'inprogress' || filterParam === 'complete') {
-      setActiveFilter(filterParam);
+      setActiveFilter(filterParam as "pending" | "inprogress" | "complete");
     }
+    // if (filterParam === 'all') setActiveFilter('all');
     fetchOrders();
   }, [searchParams]);
 
@@ -50,37 +51,22 @@ export default function Orders() {
     let filtered = [...orders];
 
     // Apply status filter
-    if (activeFilter !== 'all') {
-      filtered = filtered.filter(order => 
-        order.status.toLowerCase() === activeFilter.toLowerCase()
-      );
-      // FIFO: For pending and inprogress, sort by createdAt ascending (oldest first)
-      if (activeFilter === 'pending' || activeFilter === 'inprogress') {
-        filtered.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
-      }
-    }
+    // if (activeFilter === 'all') {
+    //   // Show all orders, no filter
+    // } else {
+    filtered = filtered.filter(order => order.status.toLowerCase() === activeFilter);
+    // }
 
-    // Apply search query - Washerman friendly
+    // Apply search filter
     if (debouncedSearchQuery.trim()) {
-      const query = debouncedSearchQuery.toLowerCase().trim();
-      filtered = filtered.filter(order => {
-        // Search in bag number - most important for washermen
-        const bagNo = order.bagNo.toLowerCase();
-        const bagNoMatch = bagNo.includes(query);
-        
-        // Search in student name - partial match
-        const studentName = order.studentName?.toLowerCase() || '';
-        const studentNameMatch = studentName.includes(query);
-        
-        // Only match exact order ID to avoid confusion (minimum 3 characters)
-        const orderIdMatch = query.length >= 3 && order.id.toString() === query;
-        
-        return bagNoMatch || studentNameMatch || orderIdMatch;
-      });
+      const query = debouncedSearchQuery.trim().toLowerCase();
+      filtered = filtered.filter(order =>
+        order.bagNumber?.toLowerCase().includes(query) ||
+        order.studentName?.toLowerCase().includes(query)
+      );
     }
 
     setFilteredOrders(filtered);
-    
     // Reset to first page when filters change
     setCurrentPage(1);
   }, [orders, activeFilter, debouncedSearchQuery]);
@@ -109,11 +95,12 @@ export default function Orders() {
     setActiveFilter(filter);
     setCurrentPage(1); // Reset to first page when changing filter
     // Update URL if needed
-    if (filter !== 'all') {
-      setSearchParams({ filter });
-    } else {
-      setSearchParams({});
-    }
+  // if (filter !== 'all') {
+  //   setSearchParams({ filter });
+  // } else {
+  //   setSearchParams({});
+  // }
+  setSearchParams({ filter });
   };
 
   const handlePageChange = (newPage: number) => {
@@ -125,7 +112,7 @@ export default function Orders() {
   };
 
   const getFilterCount = (status: FilterStatus): number => {
-    if (status === 'all') return orders.length;
+    // if (status === 'all') return orders.length;
     return orders.filter(order => 
       order.status.toLowerCase() === status.toLowerCase()
     ).length;
@@ -179,6 +166,7 @@ export default function Orders() {
         </div>
 
         {/* Filter Cards - Properly Aligned Layout */}
+        {/**
         <div className="grid grid-cols-4 gap-2 mb-4">
           <Card 
             className={`cursor-pointer transition-all duration-200 active:scale-95 ${
@@ -198,7 +186,9 @@ export default function Orders() {
               </div>
             </CardContent>
           </Card>
-          
+        </div>
+        */}
+        <div className="grid grid-cols-3 gap-2 mb-4">
           <Card 
             className={`cursor-pointer transition-all duration-200 active:scale-95 ${
               activeFilter === 'pending' 
@@ -322,10 +312,13 @@ export default function Orders() {
                 <div className="flex items-center gap-3">
                   <Package2 className="h-5 w-5 text-brand-primary" />
                   <span className="text-lg md:text-xl font-bold">
+                    {/*
                     {activeFilter === 'all' 
                       ? `All Orders (${filteredOrders.length})` 
                       : `${activeFilter.charAt(0).toUpperCase() + activeFilter.slice(1)} Orders (${filteredOrders.length})`
                     }
+                    */}
+                    {`${activeFilter.charAt(0).toUpperCase() + activeFilter.slice(1)} Orders (${filteredOrders.length})`}
                   </span>
                 </div>
                 {totalPages > 1 && (
