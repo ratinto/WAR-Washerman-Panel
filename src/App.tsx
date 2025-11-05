@@ -2,10 +2,8 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from '@/contexts/AuthContext';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import Login from '@/pages/Login';
-import Dashboard from '@/pages/Dashboard';
 import Orders from '@/pages/Orders';
 import Students from '@/pages/Students';
-import Statistics from '@/pages/Statistics';
 import Settings from '@/pages/Settings';
 
 function App() {
@@ -17,14 +15,6 @@ function App() {
           <Route path="/login" element={<Login />} />
           
           {/* Protected routes */}
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
           <Route
             path="/orders"
             element={
@@ -41,14 +31,6 @@ function App() {
               </ProtectedRoute>
             }
           />
-          {/* <Route
-            path="/statistics"
-            element={
-              <ProtectedRoute>
-                <Statistics />
-              </ProtectedRoute>
-            }
-          /> */}
           <Route
             path="/settings"
             element={
@@ -59,10 +41,10 @@ function App() {
           />
           
           {/* Default redirect */}
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/" element={<Navigate to="/orders" replace />} />
           
-          {/* Catch all - redirect to dashboard */}
-          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+          {/* Catch all - redirect to orders */}
+          <Route path="*" element={<Navigate to="/orders" replace />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>

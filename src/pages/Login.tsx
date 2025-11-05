@@ -24,8 +24,8 @@ export default function Login() {
     try {
       console.log('Attempting login with:', { username, password: '***' });
       await login({ username, password });
-      console.log('Login successful, navigating to dashboard');
-      navigate('/dashboard');
+      console.log('Login successful, navigating to orders');
+      navigate('/orders');
     } catch (err: any) {
       console.error('Login failed:', err);
       const errorMessage = err.message || 'Invalid credentials. Please try again.';

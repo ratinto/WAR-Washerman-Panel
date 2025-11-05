@@ -1,12 +1,17 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Package2, Search, BarChart3, Shirt } from 'lucide-react';
+import { Package2, Search, Shirt } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useAuth } from '@/contexts/AuthContext';
+import { FilterNav } from '@/components/FilterNav';
 import { User, Settings, LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
+import { api } from '@/services/api';
+import type { Order } from '@/types';
+
+type FilterStatus = 'pending' | 'inprogress' | 'complete';
 
 interface NavItem {
   title: string;
@@ -15,11 +20,6 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  {
-    title: 'My Work',
-    icon: <Home className="w-6 h-6" />,
-    href: '/dashboard',
-  },
   {
     title: 'All Bags',
     icon: <Package2 className="w-6 h-6" />,
@@ -44,6 +44,21 @@ export function Sidebar() {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [activeFilter, setActiveFilter] = useState<FilterStatus>('pending');
+
+  // Fetch orders for filter counts
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const data = await api.getAllOrders();
+        setOrders(data);
+      } catch (error) {
+        console.error('Error fetching orders for sidebar:', error);
+      }
+    };
+    fetchOrders();
+  }, []);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -55,6 +70,11 @@ export function Sidebar() {
     if (open) document.addEventListener('mousedown', handleClick);
     return () => document.removeEventListener('mousedown', handleClick);
   }, [open]);
+
+  const handleFilterChange = (filter: FilterStatus) => {
+    setActiveFilter(filter);
+    navigate(`/orders?filter=${filter}`);
+  };
 
   return (
     <div 
@@ -77,7 +97,7 @@ export function Sidebar() {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 space-y-3 overflow-y-auto p-4">
+      <nav className="flex-1 space-y-4 overflow-y-auto p-4">
         {navItems.map((item) => {
           const isActive = location.pathname === item.href;
           return (
@@ -99,6 +119,16 @@ export function Sidebar() {
             </Link>
           );
         })}
+
+        {/* Filter Navigation */}
+        <div className="pt-2">
+          <FilterNav
+            activeFilter={activeFilter}
+            orders={orders}
+            onFilterChange={handleFilterChange}
+            layout="vertical"
+          />
+        </div>
       </nav>
 
       <Separator />

@@ -9,10 +9,10 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { api } from '@/services/api';
 import type { Order } from '@/types';
-import { Search, Loader2, RefreshCw, Package2, Clock, Truck, CheckCircle, ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, Loader2, RefreshCw, Package2, ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function Orders() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const [orders, setOrders] = useState<Order[]>([]);
   const [filteredOrders, setFilteredOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
@@ -91,31 +91,12 @@ export default function Orders() {
     }
   };
 
-  const handleFilterChange = (filter: FilterStatus) => {
-    setActiveFilter(filter);
-    setCurrentPage(1); // Reset to first page when changing filter
-    // Update URL if needed
-  // if (filter !== 'all') {
-  //   setSearchParams({ filter });
-  // } else {
-  //   setSearchParams({});
-  // }
-  setSearchParams({ filter });
-  };
-
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
     // Scroll to top on mobile for better UX
     if (window.innerWidth < 768) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-  };
-
-  const getFilterCount = (status: FilterStatus): number => {
-    // if (status === 'all') return orders.length;
-    return orders.filter(order => 
-      order.status.toLowerCase() === status.toLowerCase()
-    ).length;
   };
 
   const handleViewDetails = (order: Order) => {
@@ -165,87 +146,8 @@ export default function Orders() {
           </Button>
         </div>
 
-        {/* Filter Cards - Properly Aligned Layout */}
-        {/**
-        <div className="grid grid-cols-4 gap-2 mb-4">
-          <Card 
-            className={`cursor-pointer transition-all duration-200 active:scale-95 ${
-              activeFilter === 'all' 
-                ? 'ring-2 ring-blue-500 shadow-lg border-blue-200 bg-blue-50' 
-                : 'hover:shadow-md border hover:bg-gray-50'
-            }`}
-            onClick={() => handleFilterChange('all')}
-          >
-            <CardContent className="px-2 py-3 flex flex-col items-center justify-center gap-1.5">
-              <div className="flex items-center justify-center w-7 h-7 rounded-full bg-blue-100">
-                <Package2 className="h-3.5 w-3.5 text-blue-600" />
-              </div>
-              <div className="text-center">
-                <div className="text-base font-bold text-blue-900 leading-none">{getFilterCount('all')}</div>
-                <div className="text-xs font-medium text-blue-800 mt-0.5">All</div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-        */}
-        <div className="grid grid-cols-3 gap-2 mb-4">
-          <Card 
-            className={`cursor-pointer transition-all duration-200 active:scale-95 ${
-              activeFilter === 'pending' 
-                ? 'ring-2 ring-amber-500 shadow-lg border-amber-200 bg-amber-50' 
-                : 'hover:shadow-md border hover:bg-gray-50'
-            }`}
-            onClick={() => handleFilterChange('pending')}
-          >
-            <CardContent className="px-2 py-3 flex flex-col items-center justify-center gap-1.5">
-              <div className="flex items-center justify-center w-7 h-7 rounded-full bg-amber-100">
-                <Clock className="h-3.5 w-3.5 text-amber-600" />
-              </div>
-              <div className="text-center">
-                <div className="text-base font-bold text-amber-900 leading-none">{getFilterCount('pending')}</div>
-                <div className="text-xs font-medium text-amber-800 mt-0.5">Start</div>
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card 
-            className={`cursor-pointer transition-all duration-200 active:scale-95 ${
-              activeFilter === 'inprogress' 
-                ? 'ring-2 ring-blue-500 shadow-lg border-blue-200 bg-blue-50' 
-                : 'hover:shadow-md border hover:bg-gray-50'
-            }`}
-            onClick={() => handleFilterChange('inprogress')}
-          >
-            <CardContent className="px-2 py-3 flex flex-col items-center justify-center gap-1.5">
-              <div className="flex items-center justify-center w-7 h-7 rounded-full bg-blue-100">
-                <Truck className="h-3.5 w-3.5 text-blue-600" />
-              </div>
-              <div className="text-center">
-                <div className="text-base font-bold text-blue-900 leading-none">{getFilterCount('inprogress')}</div>
-                <div className="text-xs font-medium text-blue-800 mt-0.5">Wash</div>
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card 
-            className={`cursor-pointer transition-all duration-200 active:scale-95 ${
-              activeFilter === 'complete' 
-                ? 'ring-2 ring-green-500 shadow-lg border-green-200 bg-green-50' 
-                : 'hover:shadow-md border hover:bg-gray-50'
-            }`}
-            onClick={() => handleFilterChange('complete')}
-          >
-            <CardContent className="px-2 py-3 flex flex-col items-center justify-center gap-1.5">
-              <div className="flex items-center justify-center w-7 h-7 rounded-full bg-green-100">
-                <CheckCircle className="h-3.5 w-3.5 text-green-600" />
-              </div>
-              <div className="text-center">
-                <div className="text-base font-bold text-green-900 leading-none">{getFilterCount('complete')}</div>
-                <div className="text-xs font-medium text-green-800 mt-0.5">Done</div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+        {/* Filter Cards - Moved to Navbar/Sidebar */}
+        {/* Now in Sidebar (desktop) and MobileNavigation (mobile) */}
 
         {/* Enhanced Search Bar - Accessible & Mobile Optimized */}
         <div className="mb-6">
