@@ -61,7 +61,7 @@ export default function Orders() {
     if (debouncedSearchQuery.trim()) {
       const query = debouncedSearchQuery.trim().toLowerCase();
       filtered = filtered.filter(order =>
-        order.bagNumber?.toLowerCase().includes(query) ||
+        order.bagNo?.toLowerCase().includes(query) ||
         order.studentName?.toLowerCase().includes(query)
       );
     }

@@ -73,7 +73,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                 aria-label="Open profile menu"
               >
                 <User className="w-5 h-5 text-brand-primary" />
-                <span className="font-medium text-gray-900 text-base">{user.username}</span>
+                <span className="font-medium text-gray-900 text-base">{user?.username || 'User'}</span>
               </Button>
               {open && (
                 <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50">

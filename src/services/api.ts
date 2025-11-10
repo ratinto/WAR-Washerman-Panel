@@ -93,8 +93,8 @@ class ApiService {
       return response.data.data || {
         totalOrders: 0,
         pendingOrders: 0,
-        inProgressOrders: 0,
-        completedOrders: 0,
+        inprogressOrders: 0,
+        completeOrders: 0,
       };
     } catch (error) {
       console.error('Error fetching dashboard stats:', error);
@@ -102,8 +102,8 @@ class ApiService {
       return {
         totalOrders: 0,
         pendingOrders: 0,
-        inProgressOrders: 0,
-        completedOrders: 0,
+        inprogressOrders: 0,
+        completeOrders: 0,
       };
     }
   }
